@@ -15,7 +15,7 @@ export const AppDataTablePaginationComponent: FunctionComponent<AppDataTablePagi
   const pages = arrayRange(totalNumberOfPages);
 
   return (
-    <ul className='pagination'>
+    <ul className="pagination">
       {pages.map((pageNumber) => (
         <AppDataTablePaginationPageComponent
           key={pageNumber}

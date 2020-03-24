@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
+import React, { ChangeEvent, Component, ReactNode } from 'react';
 import { AppDataTablePaginationComponent } from './pagination/component';
 import { AppDataTableRowComponent } from './row/component';
 import { AppDataTableSearchComponent } from './search/component';
 import { AppDataTableComponentPropsInterface } from './component-props.interface';
 import { AppDataTableComponentStateInterface } from './component-state.interface';
+import { DataTableTypesItemType } from './types';
 
 export class DataTableComponent extends Component<
   AppDataTableComponentPropsInterface,
@@ -12,42 +13,39 @@ export class DataTableComponent extends Component<
   state = {
     rows: this.props.rows,
     currentPageNumber: 0,
-    totalNumberOfPages: this.calculateTotalNumberOfPages(this.props.rows)
+    totalNumberOfPages: this.calculateTotalNumberOfPages(this.props.rows),
   };
 
   static defaultProps: Partial<AppDataTableComponentPropsInterface> = {
     rowsPerPage: 40,
   };
 
-  calculateTotalNumberOfPages(rows: AppDataTableComponentPropsInterface['rows']): number {
+  calculateTotalNumberOfPages(rows: Array<DataTableTypesItemType>): number {
     const { rowsPerPage } = this.props;
-    if (rowsPerPage == 0) {
+    if (rowsPerPage === 0) {
       return 0;
     }
 
     return Math.ceil(rows.length / rowsPerPage);
   }
 
-  // TODO: Fix the any
-  search(event: any) {
+  search = (event: ChangeEvent): void => {
     const { rows } = this.props;
-    const text = event.target.value;
+    const text = (event.target as HTMLInputElement).value.toLowerCase();
     let rowsFound = rows;
 
     if (text) {
-      // TODO: Refactor
-      rowsFound = rows.filter((row) => {
-        return row.name1.toLowerCase().search(text.toLowerCase()) > -1 ||
-         (row.email && row.email.toLowerCase().search(text.toLowerCase()) > -1)
-      });
+      rowsFound = rows.filter(
+        (row) => row.name1.toLowerCase().search(text) > -1 || (row.email && row.email.toLowerCase().search(text) > -1),
+      );
     }
 
     this.setState({
       rows: rowsFound,
       currentPageNumber: 0,
-      totalNumberOfPages: this.calculateTotalNumberOfPages(rowsFound)
-    })
-  }
+      totalNumberOfPages: this.calculateTotalNumberOfPages(rowsFound),
+    });
+  };
 
   // TODO: Change function name to be a proper event handler
   changeToPageNumber = (pageNumber: number): void => {
@@ -64,19 +62,18 @@ export class DataTableComponent extends Component<
     return [startIndex, startIndex + rowsPerPage];
   }
 
-  render() {
+  render(): ReactNode {
     const { rows, currentPageNumber, totalNumberOfPages } = this.state;
-    const rowsToRender = rows
-      .map(row => <AppDataTableRowComponent key={row.per_id} row={row} />)
-      .slice(...this.rowsInPageNumber(currentPageNumber))
 
-    return(
+    const rowsToRender = rows
+      .map((row) => <AppDataTableRowComponent key={row.per_id} row={row} />)
+      .slice(...this.rowsInPageNumber(currentPageNumber));
+
+    return (
       <div>
-        <AppDataTableSearchComponent onSearch={this.search.bind(this)} />
+        <AppDataTableSearchComponent onSearch={this.search} />
         <table>
-          <tbody>
-            { rowsToRender }
-          </tbody>
+          <tbody>{rowsToRender}</tbody>
         </table>
         <AppDataTablePaginationComponent
           currentPageNumber={currentPageNumber}
@@ -84,6 +81,6 @@ export class DataTableComponent extends Component<
           onChange={this.changeToPageNumber}
         />
       </div>
-    )
+    );
   }
 }

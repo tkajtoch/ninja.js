@@ -1,7 +1,7 @@
-import { AppDataTableComponentPropsInterface } from './component-props.interface';
+import { DataTableTypesItemType } from './types';
 
 export interface AppDataTableComponentStateInterface {
-  rows: AppDataTableComponentPropsInterface['rows'];
+  rows: Array<DataTableTypesItemType>;
   currentPageNumber: number;
   totalNumberOfPages: number;
 }
