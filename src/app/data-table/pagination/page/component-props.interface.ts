@@ -1,5 +1,7 @@
+import { AppDataTablePaginationChangeEventInterface } from '../change-event.interface';
+
 export interface AppDataTablePaginationPageComponentPropsInterface {
-  pageNumber: number;
-  currentPageNumber: number;
-  onChange: (pageNumber: number) => void;
+  page: number;
+  isActive: boolean;
+  onChange: (event: AppDataTablePaginationChangeEventInterface) => void;
 }

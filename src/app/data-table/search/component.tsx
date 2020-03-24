@@ -1,10 +1,12 @@
-import React, { FunctionComponent } from 'react';
+import React, { ChangeEvent, FunctionComponent } from 'react';
 import { AppDataTableSearchComponentPropsInterface } from './component-props.interface';
 
+// TODO: Add i18n placeholder
+// TODO: Modify the onChange callback to have string value instead of react ChangeEvent
 export const AppDataTableSearchComponent: FunctionComponent<AppDataTableSearchComponentPropsInterface> = ({
   onSearch,
-}) => (
-  <div className="p-b-1">
-    <input type="search" className="form-control" placeholder="Søg brugere" onChange={onSearch} />
-  </div>
-);
+}) => {
+  const onChange = (event: ChangeEvent<HTMLInputElement>): void => onSearch({ value: event.target.value });
+
+  return <input type='search' className='form-control' placeholder='Søg brugere' onChange={onChange} />;
+};

@@ -1,5 +1,5 @@
-import { ChangeEvent } from 'react';
+import { AppDataTableSearchEventInterface } from './search-event.interface';
 
 export interface AppDataTableSearchComponentPropsInterface {
-  onSearch: (event: ChangeEvent) => void;
+  onSearch: (event: AppDataTableSearchEventInterface) => void;
 }

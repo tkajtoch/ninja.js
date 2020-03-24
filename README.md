@@ -19,12 +19,12 @@ To run the tests:
 - [x] Port the application to TypeScript
 - [x] Fix tests
 - [x] Change file naming convention
-- [ ] Use CSS modules in styles (I would enforce it but let's keep the default create-react-app configuration for now)
+- [x] Use CSS modules in styles (I would enforce it but let's keep the default create-react-app configuration for now)
 - [ ] Write basic tests of the application entry point
-- [ ] Refactor App component
+- [x] Refactor App component
 - [ ] Refactor DataTable component
-- [ ] Refactor Pagination component
+- [x] Refactor Pagination component
 - [ ] Refactor Row component
-- [ ] Refactor Page component
-- [ ] Refactor Search component
-- [ ] Use named exports within the app
+- [x] Refactor Page component
+- [x] Refactor Search component
+- [x] Use named exports within the app

@@ -1,39 +1,16 @@
-import React, { MouseEvent, FunctionComponent } from 'react';
+import classNames from 'classnames';
+import React, { FunctionComponent } from 'react';
 import { AppDataTablePaginationPageComponentPropsInterface } from './component-props.interface';
+import styles from './style.module.css';
 
 export const AppDataTablePaginationPageComponent: FunctionComponent<AppDataTablePaginationPageComponentPropsInterface> = ({
-  currentPageNumber,
-  pageNumber,
+  page,
+  isActive,
   onChange,
-}) => {
-  const isActivePage = (): boolean => {
-    return currentPageNumber === pageNumber;
-  };
-
-  const renderedPageNumber = (): number => {
-    return pageNumber + 1;
-  };
-
-  const click = (event: MouseEvent): void => {
-    event.preventDefault();
-    onChange(pageNumber);
-  };
-
-  if (isActivePage()) {
-    return (
-      <li className="page-item mr-1">
-        <button className="page-link button-outline" onClick={click}>
-          {renderedPageNumber()}
-        </button>
-      </li>
-    );
-  }
-
-  return (
-    <li className="page-item mr-1">
-      <button className="page-link" onClick={click}>
-        {renderedPageNumber()}
-      </button>
-    </li>
-  );
-};
+}) => (
+  <li className={styles.appdatatablepaginationpage}>
+    <button className={classNames({ 'button-outline': isActive })} onClick={(): void => onChange({ page })}>
+      {page}
+    </button>
+  </li>
+);
