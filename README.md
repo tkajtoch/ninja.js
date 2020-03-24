@@ -13,3 +13,18 @@ To get started:
 
 To run the tests:
 - `yarn run test`
+
+# TODO
+
+- [ ] Port the application to TypeScript
+- [ ] Fix tests
+- [ ] Change file naming convention
+- [ ] Use CSS modules in styles (I would enforce it but let's keep the default create-react-app configuration for now)
+- [ ] Write basic tests of the application entry point
+- [ ] Refactor App component
+- [ ] Refactor DataTable component
+- [ ] Refactor Pagination component
+- [ ] Refactor Row component
+- [ ] Refactor Page component
+- [ ] Refactor Search component
+- [ ] Use named exports within the app
