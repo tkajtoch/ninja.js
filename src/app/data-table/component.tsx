@@ -45,7 +45,7 @@ export class DataTableComponent extends Component<
 
     this.setState({
       rows: rowsFound,
-      currentPageNumber: 0,
+      currentPageNumber: 1,
       totalNumberOfPages: this.calculateTotalNumberOfPages(rowsFound),
     });
   };
