@@ -14,7 +14,7 @@ export const AppComponent: FunctionComponent<AppComponentPropsInterface> = ({ ro
   return (
     <IntlProvider locale={locale} messages={I18nTranslations[locale]}>
       <div className={classNames(styles.app, 'container')}>
-        <DataTableComponent rows={rows} locale='da' rowsPerPage={5} />
+        <DataTableComponent rows={rows} rowsPerPage={5} />
       </div>
     </IntlProvider>
   );

@@ -8,82 +8,94 @@ import { DataTableTypesItemType } from './types';
 import { AppDataTablePaginationChangeEventInterface } from './pagination/change-event.interface';
 import { AppDataTableSearchEventInterface } from './search/search-event.interface';
 
+// This could be a Function Component but I'm leaving it as a Class Component because it was like that the beginning
 export class DataTableComponent extends Component<
   AppDataTableComponentPropsInterface,
   AppDataTableComponentStateInterface
 > {
-  state = {
-    rows: this.props.rows,
-    currentPageNumber: 1,
-    totalNumberOfPages: this.calculateTotalNumberOfPages(this.props.rows),
-  };
-
   static defaultProps: Partial<AppDataTableComponentPropsInterface> = {
     rowsPerPage: 40,
   };
 
-  calculateTotalNumberOfPages(rows: Array<DataTableTypesItemType>): number {
+  // Let's assume the props won't change over time so there's no need
+  // to do any kind of resetting the state when it happens
+  state = {
+    filteredRows: this.props.rows,
+    activePage: 1,
+    totalPages: this.calculateTotalPages(this.props.rows),
+  };
+
+  render(): ReactNode {
+    const { activePage, totalPages } = this.state;
+
+    const rows = this.getRowsForActivePage();
+
+    return (
+      <div>
+        <AppDataTableSearchComponent onSearch={this.onSearchTable} />
+        <table>
+          <tbody>
+            {rows.map((row, index) => (
+              <AppDataTableRowComponent key={`${row.per_id}-${index}`} row={row} />
+            ))}
+          </tbody>
+        </table>
+        <AppDataTablePaginationComponent
+          activePage={activePage}
+          totalPages={totalPages}
+          onChange={this.onChangePagination}
+        />
+      </div>
+    );
+  }
+
+  private onSearchTable = (event: AppDataTableSearchEventInterface): void => {
+    const filteredRows = this.filterRows(this.props.rows, event.value);
+
+    this.setState({
+      filteredRows,
+      activePage: 1,
+      totalPages: this.calculateTotalPages(filteredRows),
+    });
+  };
+
+  private onChangePagination = (event: AppDataTablePaginationChangeEventInterface): void => {
+    this.setState({
+      activePage: event.page,
+    });
+  };
+
+  private getRowsForActivePage(): Array<DataTableTypesItemType> {
     const { rowsPerPage } = this.props;
-    if (rowsPerPage === 0) {
+    const { activePage, filteredRows } = this.state;
+
+    // activePage is 1-based
+    const startIndex: number = (activePage - 1) * rowsPerPage;
+    const endIndex: number = startIndex + rowsPerPage;
+    return filteredRows.slice(startIndex, endIndex);
+  }
+
+  private filterRows(rows: Array<DataTableTypesItemType>, searchValue: string): Array<DataTableTypesItemType> {
+    if (!searchValue) {
+      return rows;
+    }
+
+    searchValue = searchValue.toLowerCase();
+
+    return rows.filter(
+      (row) =>
+        row.name1.toLowerCase().search(searchValue) > -1 ||
+        (row.email && row.email.toLowerCase().search(searchValue) > -1),
+    );
+  }
+
+  private calculateTotalPages(rows: Array<DataTableTypesItemType>): number {
+    const { rowsPerPage } = this.props;
+
+    if (rowsPerPage < 1) {
       return 0;
     }
 
     return Math.ceil(rows.length / rowsPerPage);
-  }
-
-  search = (event: AppDataTableSearchEventInterface): void => {
-    const { value } = event;
-    const { rows } = this.props;
-    let rowsFound = rows;
-
-    if (value) {
-      rowsFound = rows.filter(
-        (row) =>
-          row.name1.toLowerCase().search(value) > -1 || (row.email && row.email.toLowerCase().search(value) > -1),
-      );
-    }
-
-    this.setState({
-      rows: rowsFound,
-      currentPageNumber: 1,
-      totalNumberOfPages: this.calculateTotalNumberOfPages(rowsFound),
-    });
-  };
-
-  // TODO: Change function name to be a proper event handler
-  changeToPageNumber = (event: AppDataTablePaginationChangeEventInterface): void => {
-    this.setState({
-      currentPageNumber: event.page,
-    });
-  };
-
-  rowsInPageNumber(pageNumber: number): Array<number> {
-    const { rowsPerPage } = this.props;
-
-    const startIndex = (pageNumber - 1) * rowsPerPage;
-    // TODO: it shouldn't be returned like this
-    return [startIndex, startIndex + rowsPerPage];
-  }
-
-  render(): ReactNode {
-    const { rows, currentPageNumber, totalNumberOfPages } = this.state;
-
-    const rowsToRender = rows
-      .map((row) => <AppDataTableRowComponent key={row.per_id} row={row} />)
-      .slice(...this.rowsInPageNumber(currentPageNumber));
-
-    return (
-      <div>
-        <AppDataTableSearchComponent onSearch={this.search} />
-        <table>
-          <tbody>{rowsToRender}</tbody>
-        </table>
-        <AppDataTablePaginationComponent
-          activePage={currentPageNumber}
-          totalPages={totalNumberOfPages}
-          onChange={this.changeToPageNumber}
-        />
-      </div>
-    );
   }
 }

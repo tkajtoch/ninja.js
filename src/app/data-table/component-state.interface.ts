@@ -1,7 +1,7 @@
 import { DataTableTypesItemType } from './types';
 
 export interface AppDataTableComponentStateInterface {
-  rows: Array<DataTableTypesItemType>;
-  currentPageNumber: number;
-  totalNumberOfPages: number;
+  filteredRows: Array<DataTableTypesItemType>;
+  activePage: number;
+  totalPages: number;
 }
