@@ -1,3 +1,3 @@
-import { AppModelUserInterface } from '../model/user.interface';
+import { AppUserModelInterface } from '../user/model.interface';
 
-export type DataTableTypesItemType = AppModelUserInterface;
+export type AppDataTableTypesItemType = AppUserModelInterface;

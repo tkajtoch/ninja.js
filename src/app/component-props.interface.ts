@@ -1,5 +1,5 @@
-import { AppModelUserInterface } from './model/user.interface';
+import { AppUserModelInterface } from './user/model.interface';
 
 export interface AppComponentPropsInterface {
-  rows: Array<AppModelUserInterface>;
+  rows: Array<AppUserModelInterface>;
 }

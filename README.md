@@ -22,9 +22,9 @@ To run the tests:
 - [x] Use CSS modules in styles (I would enforce it but let's keep the default create-react-app configuration for now)
 - [ ] Write basic tests of the application entry point
 - [x] Refactor App component
-- [ ] Refactor DataTable component
+- [x] Refactor DataTable component
 - [x] Refactor Pagination component
-- [ ] Refactor Row component
+- [x] Refactor Row component
 - [x] Refactor Page component
 - [x] Refactor Search component
 - [x] Use named exports within the app

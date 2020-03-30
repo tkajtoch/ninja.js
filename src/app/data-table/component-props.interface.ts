@@ -1,6 +1,6 @@
-import { DataTableTypesItemType } from './types';
+import { AppDataTableTypesItemType } from './types';
 
 export interface AppDataTableComponentPropsInterface {
-  rows: Array<DataTableTypesItemType>;
+  rows: Array<AppDataTableTypesItemType>;
   rowsPerPage: number;
 }

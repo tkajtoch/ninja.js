@@ -1,5 +1,5 @@
-import { DataTableTypesItemType } from '../types';
+import { AppDataTableTypesItemType } from '../types';
 
 export interface AppDataTableRowComponentPropsInterface {
-  row: DataTableTypesItemType;
+  row: AppDataTableTypesItemType;
 }
